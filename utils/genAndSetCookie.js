@@ -8,7 +8,7 @@ const genAndSetCookie=(userId,res)=>{
         // maxAge:5*1000,
         httpOnly:true,
         sameSite:"None",
-        secure:false
+        secure:true
     });                   
 }
 
