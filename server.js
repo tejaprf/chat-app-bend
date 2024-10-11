@@ -22,8 +22,8 @@ app.use(cookieParser());
 const PORT=process.env.PORT || 6000;
 
 
-app.use(cors({
-    origin: process.env.FEND_URL, // Replace with your frontend URL
+app.use(cors({ 
+    origin:process.env.FEND_URL, // Replace with your frontend URL
     credentials: true,
   }));
 
