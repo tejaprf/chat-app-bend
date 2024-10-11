@@ -10,7 +10,7 @@ const server=http.createServer(app);
 //Socket server. Enclosing express server in socket server.
 const io=new Server(server,{
     cors:{
-        origin:'http://localhost:3000',
+        origin:process.env.FEND_URL,
         methods:["GET","POST"]
     }
 })
