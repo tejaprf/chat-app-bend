@@ -2,6 +2,7 @@ import express from "express";
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
 import { Friend } from "../models/user.friends.js";
+import { io, userSocketMap } from "../socket/socket.js";
 
 export const sendMessage=async (req,res)=>{
     console.log("Send Message");
@@ -64,12 +65,22 @@ export const sendMessage=async (req,res)=>{
             senderId,receiverId,message
         })
         conversation.messages.push(newMessage._id);
+        await Promise.all([newMessage.save(),conversation.save()]);
+
+        
+        
+        const receiverSocket=userSocketMap[receiverId];
+
+        if(receiverSocket){
+            // io.to(<socketid>).emit("eventName",data);   when we call this event using socket io client, then we get this data    
+            io.to(receiverSocket).emit("newMessage",newMessage);
+        }
 
         // await newMessage.save();
         // await conversation.save();
         // Above is sequential. Below is parallel execution
-        Promise.all([newMessage.save(),conversation.save()]);
 
+        console.log("Message Controller - Send Message ",newMessage)
         // return res.status(201).json({data:newMessage,message:"Conversation and Message saved successfully"});
         return res.status(201).json({messageVal:newMessage,message:"Conversation and Message saved successfully"});
 
@@ -95,7 +106,7 @@ export const getMessage=async (req,res)=>{
         if(!conversation){
             return res.status(200).json([]);
         }
-        console.log("Messages fetched ",conversation.messages);
+        // console.log("Messages fetched ",conversation.messages);
         return res.status(200).json(conversation.messages);
 
     }catch(err){

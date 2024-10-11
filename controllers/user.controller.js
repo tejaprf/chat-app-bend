@@ -9,7 +9,7 @@ export const getFriends=async (req,res)=>{
         });
         // const friends=await Friend.findOne({curUser:req.user._id});
         
-        console.log(friends["friends"]);
+        // console.log(friends["friends"]);
     
         return res.status(200).json(friends["friends"]);
         
