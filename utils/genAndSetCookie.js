@@ -7,7 +7,6 @@ const genAndSetCookie=(userId,res)=>{
         maxAge:7*24*60*60*1000,         //res.cookie(tokenName,token,validity)
         // maxAge:5*1000,
         httpOnly:true,
-        sameSite:"None",
         secure:true
     });                   
 }
